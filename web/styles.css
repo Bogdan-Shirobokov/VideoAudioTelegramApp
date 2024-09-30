@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+.media-container {
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+audio, video {
+    display: block;
+    margin: 20px auto;
+}
