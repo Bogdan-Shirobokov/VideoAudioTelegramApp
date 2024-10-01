@@ -4,27 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Аудиофайлы</title>
+    <style>
+        /* Стили для модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5); /* Полупрозрачный фон */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
     <script>
+        // Функция для отображения плеера
         function showPlayer(audioUrl) {
             document.getElementById("audioPlayer").src = audioUrl;
-            document.getElementById("player").style.display = "block";
+            document.getElementById("modalPlayer").style.display = "flex"; // Показать модальное окно
         }
 
+        // Функция для скрытия плеера
         function hidePlayer() {
-            document.getElementById("player").style.display = "none";
+            document.getElementById("modalPlayer").style.display = "none"; // Скрыть модальное окно
         }
     </script>
 </head>
 <body>
     <h1>Доступные аудиофайлы</h1>
     <ul>
-        <li><a href="https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ЛУЧШАЯ ПОДРУГА.mp3">Аудио 1</a></li>
-        <li><a href="https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ПЛАКАЛ ГОЛЛИВУД.mp3">Аудио 2</a></li>
-     </ul>
+        <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ЛУЧШАЯ ПОДРУГА.mp3')">Аудио 1</a></li>
+        <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ПЛАКАЛ ГОЛЛИВУД.mp3')">Аудио 2</a></li>
+    </ul>
 
-    <div id="player" style="display: none;">
-        <button onclick="hidePlayer()">Закрыть плеер</button>
-        <audio id="audioPlayer" controls></audio>
+    <!-- Модальное окно для плеера -->
+    <div id="modalPlayer" class="modal">
+        <div class="modal-content">
+            <button onclick="hidePlayer()">Закрыть плеер</button>
+            <audio id="audioPlayer" controls></audio>
+        </div>
     </div>
 </body>
 </html>
