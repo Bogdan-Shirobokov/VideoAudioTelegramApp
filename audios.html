@@ -18,19 +18,49 @@
             justify-content: center;
             align-items: center;
         }
+        /* Стили для окна плеера */
         .modal-content {
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
             width: 300px;
+            height: 200px;
             text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
     <script>
+        // Массив аудиофайлов
+        const audioFiles = [
+            'https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ЛУЧШАЯ ПОДРУГА.mp3',
+            'https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ПЛАКАЛ ГОЛЛИВУД.mp3'
+        ];
+
+        let currentFileIndex = 0;
+
         // Функция для отображения плеера
-        function showPlayer(audioUrl) {
-            document.getElementById("audioPlayer").src = audioUrl;
+        function showPlayer(index) {
+            currentFileIndex = index;
+            document.getElementById("audioPlayer").src = audioFiles[currentFileIndex];
             document.getElementById("modalPlayer").style.display = "flex"; // Показать модальное окно
+        }
+
+        // Функция для переключения на предыдущий трек
+        function prevTrack() {
+            if (currentFileIndex > 0) {
+                currentFileIndex--;
+                document.getElementById("audioPlayer").src = audioFiles[currentFileIndex];
+                document.getElementById("audioPlayer").play();
+            }
+        }
+
+        // Функция для переключения на следующий трек
+        function nextTrack() {
+            if (currentFileIndex < audioFiles.length - 1) {
+                currentFileIndex++;
+                document.getElementById("audioPlayer").src = audioFiles[currentFileIndex];
+                document.getElementById("audioPlayer").play();
+            }
         }
 
         // Функция для скрытия плеера
@@ -42,8 +72,8 @@
 <body>
     <h1>Доступные аудиофайлы</h1>
     <ul>
-        <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ЛУЧШАЯ ПОДРУГА.mp3')">Аудио 1</a></li>
-        <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ПЛАКАЛ ГОЛЛИВУД.mp3')">Аудио 2</a></li>
+        <li><a href="javascript:void(0);" onclick="showPlayer(0)">Аудио 1</a></li>
+        <li><a href="javascript:void(0);" onclick="showPlayer(1)">Аудио 2</a></li>
     </ul>
 
     <!-- Модальное окно для плеера -->
@@ -51,6 +81,10 @@
         <div class="modal-content">
             <button onclick="hidePlayer()">Закрыть плеер</button>
             <audio id="audioPlayer" controls></audio>
+            <div>
+                <button onclick="prevTrack()">Предыдущий</button>
+                <button onclick="nextTrack()">Следующий</button>
+            </div>
         </div>
     </div>
 </body>
