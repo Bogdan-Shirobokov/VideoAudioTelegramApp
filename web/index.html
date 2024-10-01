@@ -1,28 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VideoAudioTelegramApp</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Мини-приложение</title>
+    <style>
+        #player { display: none; }
+    </style>
+    <script>
+        function showPlayer(mediaUrl, type) {
+            var player = document.getElementById("player");
+            var mediaElement;
+            if (type === 'audio') {
+                mediaElement = '<audio controls><source src="' + mediaUrl + '" type="audio/mpeg">Ваш браузер не поддерживает аудио элемент.</audio>';
+            } else if (type === 'video') {
+                mediaElement = '<video controls><source src="' + mediaUrl + '" type="video/mp4">Ваш браузер не поддерживает видео элемент.</video>';
+            }
+            document.getElementById("media").innerHTML = mediaElement;
+            document.getElementById("fileList").style.display = "none";
+            player.style.display = "block";
+        }
+
+        function goBack() {
+            document.getElementById("player").style.display = "none";
+            document.getElementById("fileList").style.display = "block";
+        }
+    </script>
 </head>
 <body>
-    <h1>Welcome to VideoAudioTelegramApp</h1>
-
-    <div class="media-container">
-        <h2>Audio Books</h2>
-        <audio controls>
-            <source src="../media/audios/sample-audio.mp3" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
-
-        <h2>Video Lessons</h2>
-        <video width="320" height="240" controls>
-            <source src="../media/videos/sample-video.mp4" type="video/mp4">
-            Your browser does not support the video element.
-        </video>
+    <h1>Список медиафайлов</h1>
+    <div id="fileList">
+        <ul>
+            <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/audio1.mp3', 'audio')">Аудио 1</a></li>
+            <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/audio2.mp3', 'audio')">Аудио 2</a></li>
+            <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/videos/video1.mp4', 'video')">Видео 1</a></li>
+            <li><a href="javascript:void(0);" onclick="showPlayer('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/videos/video2.mp4', 'video')">Видео 2</a></li>
+        </ul>
     </div>
-
-    <script src="scripts.js"></script>
+    
+    <div id="player">
+        <button onclick="goBack()">Назад к списку</button>
+        <div id="media"></div>
+    </div>
 </body>
 </html>
