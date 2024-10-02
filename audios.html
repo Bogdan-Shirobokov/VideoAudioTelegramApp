@@ -4,44 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Аудиофайлы</title>
-    <style>
-        /* Стили для модального окна */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5); /* Полупрозрачный фон */
-            justify-content: center;
-            align-items: center;
-        }
-        /* Стили для окна плеера */
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            width: 300px;
-            height: 200px;
-            text-align: center;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Подключаем стили -->
     <script>
-        // Массив аудиофайлов
-        const audioFiles = [
-            'https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ЛУЧШАЯ ПОДРУГА.mp3',
-            'https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/audios/Люся Чеботина – ПЛАКАЛ ГОЛЛИВУД.mp3'
-        ];
-
+        let audioFiles = [];
         let currentFileIndex = 0;
+
+        // Функция для загрузки аудиофайлов из JSON
+        async function loadAudioFiles() {
+            const response = await fetch('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/audioFiles.json');
+            const data = await response.json();
+            audioFiles = data.audioFiles;
+            displayAudioList();
+        }
+
+        // Функция отображения списка аудиофайлов
+        function displayAudioList() {
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = ""; // Очистка списка
+            audioFiles.forEach((file, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="javascript:void(0);" onclick="showPlayer(${index})">${file.name}</a>`;
+                fileList.appendChild(li);
+            });
+        }
 
         // Функция для отображения плеера
         function showPlayer(index) {
             currentFileIndex = index;
-            document.getElementById("audioPlayer").src = audioFiles[currentFileIndex];
+            document.getElementById("audioPlayer").src = audioFiles[currentFileIndex].url;
             document.getElementById("modalPlayer").style.display = "flex"; // Показать модальное окно
         }
 
@@ -49,7 +39,7 @@
         function prevTrack() {
             if (currentFileIndex > 0) {
                 currentFileIndex--;
-                document.getElementById("audioPlayer").src = audioFiles[currentFileIndex];
+                document.getElementById("audioPlayer").src = audioFiles[currentFileIndex].url;
                 document.getElementById("audioPlayer").play();
             }
         }
@@ -58,23 +48,23 @@
         function nextTrack() {
             if (currentFileIndex < audioFiles.length - 1) {
                 currentFileIndex++;
-                document.getElementById("audioPlayer").src = audioFiles[currentFileIndex];
+                document.getElementById("audioPlayer").src = audioFiles[currentFileIndex].url;
                 document.getElementById("audioPlayer").play();
             }
         }
 
         // Функция для скрытия плеера
         function hidePlayer() {
-            document.getElementById("modalPlayer").style.display = "none"; // Скрыть модальное окно
+            document.getElementById("modalPlayer").style.display = "none";
         }
+
+        // Загрузка списка аудиофайлов при загрузке страницы
+        window.onload = loadAudioFiles;
     </script>
 </head>
 <body>
     <h1>Доступные аудиофайлы</h1>
-    <ul>
-        <li><a href="javascript:void(0);" onclick="showPlayer(0)">Аудио 1</a></li>
-        <li><a href="javascript:void(0);" onclick="showPlayer(1)">Аудио 2</a></li>
-    </ul>
+    <ul id="fileList"></ul>
 
     <!-- Модальное окно для плеера -->
     <div id="modalPlayer" class="modal">
