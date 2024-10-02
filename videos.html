@@ -4,12 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Видеофайлы</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Подключаем стили -->
+    <script>
+        let videoFiles = [];
+        let currentFileIndex = 0;
+
+        // Функция для загрузки видеофайлов из JSON
+        async function loadVideoFiles() {
+            const response = await fetch('https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/videoFiles.json');
+            const data = await response.json();
+            videoFiles = data.videoFiles;
+            displayVideoList();
+        }
+
+        // Функция для отображения списка видеофайлов
+        function displayVideoList() {
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = ""; // Очистка списка
+            videoFiles.forEach((file, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="javascript:void(0);" onclick="showPlayer(${index})">${file.name}</a>`;
+                fileList.appendChild(li);
+            });
+        }
+
+        // Функция для отображения плеера
+        function showPlayer(index) {
+            currentFileIndex = index;
+            document.getElementById("videoPlayer").src = videoFiles[currentFileIndex].url;
+            document.getElementById("modalPlayer").style.display = "flex"; // Показать модальное окно
+        }
+
+        // Функция для переключения на предыдущее видео
+        function prevVideo() {
+            if (currentFileIndex > 0) {
+                currentFileIndex--;
+                document.getElementById("videoPlayer").src = videoFiles[currentFileIndex].url;
+                document.getElementById("videoPlayer").play();
+            }
+        }
+
+        // Функция для переключения на следующее видео
+        function nextVideo() {
+            if (currentFileIndex < videoFiles.length - 1) {
+                currentFileIndex++;
+                document.getElementById("videoPlayer").src = videoFiles[currentFileIndex].url;
+                document.getElementById("videoPlayer").play();
+            }
+        }
+
+        // Функция для скрытия плеера
+        function hidePlayer() {
+            document.getElementById("modalPlayer").style.display = "none";
+        }
+
+        // Загрузка списка видеофайлов при загрузке страницы
+        window.onload = loadVideoFiles;
+    </script>
 </head>
 <body>
     <h1>Доступные видеофайлы</h1>
-    <ul>
-        <li><a href="https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/videos/tiktok_video_20240928_144801_157702.mp4">Видео 1</a></li>
-        <li><a href="https://bogdan-shirobokov.github.io/VideoAudioTelegramApp/media/videos/tiktok_video_20240928_144948_236468.mp4">Видео 2</a></li>
-    </ul>
+    <ul id="fileList"></ul>
+
+    <!-- Модальное окно для плеера -->
+    <div id="modalPlayer" class="modal">
+        <div class="modal-content">
+            <button onclick="hidePlayer()">Закрыть плеер</button>
+            <video id="videoPlayer" controls width="100%"></video>
+            <div>
+                <button onclick="prevVideo()">Предыдущее</button>
+                <button onclick="nextVideo()">Следующее</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
